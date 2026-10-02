@@ -33,6 +33,10 @@ W kodzie nie ma żadnych sekretów (clientId i tenantId nie są tajne).
 
 ## Krok 2. Rejestracja aplikacji w Entra ID (5 minut, bez admina)
 
+> **Zrobione 2026-10-02** przez Azure CLI: aplikacja `Kalendarz OneNote`,
+> Client ID `80b6218c-8514-436e-bce7-3f3affb99808` (już wpisany w `config.js`).
+> Poniższe kroki zostają na wypadek ponownej rejestracji.
+
 1. https://entra.microsoft.com → **Aplikacje → Rejestracje aplikacji → Nowa rejestracja**
 2. Nazwa: `Kalendarz OneNote`, typ kont: **Tylko to katalog organizacyjny**
 3. Identyfikator URI przekierowania: platforma **Aplikacja jednostronicowa (SPA)**,
