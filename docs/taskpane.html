@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kalendarz zadań</title>
+  <link rel="stylesheet" href="taskpane.css">
+  <!-- office.js usuwa history.replaceState/pushState, których potrzebuje MSAL: zachowujemy je i przywracamy -->
+  <script>window._hist = { r: history.replaceState, p: history.pushState };</script>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script>history.replaceState = window._hist.r; history.pushState = window._hist.p;</script>
+  <script src="lib/msal-browser.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Kalendarz zadań</div>
+    <div id="account" class="account"></div>
+  </header>
+
+  <div id="banner" class="banner" hidden></div>
+
+  <section id="login-view" class="login" hidden>
+    <p>Zaloguj się kontem służbowym, aby zapisywać zadania w Microsoft To Do.</p>
+    <button id="login-btn" class="primary">Zaloguj się</button>
+  </section>
+
+  <main id="app-view" hidden>
+    <section class="calendar">
+      <div class="cal-nav">
+        <button id="prev-month" class="icon" aria-label="Poprzedni miesiąc">‹</button>
+        <div id="month-label" class="month-label"></div>
+        <button id="next-month" class="icon" aria-label="Następny miesiąc">›</button>
+      </div>
+      <div class="cal-grid weekdays">
+        <span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>Sb</span><span>Nd</span>
+      </div>
+      <div id="cal-days" class="cal-grid days"></div>
+      <button id="today-btn" class="link">Dzisiaj</button>
+    </section>
+
+    <section class="day">
+      <h2 id="day-label"></h2>
+      <ul id="task-list" class="tasks"></ul>
+      <p id="empty-day" class="muted" hidden>Brak zadań na ten dzień.</p>
+
+      <form id="task-form" class="task-form" autocomplete="off">
+        <input id="f-title" type="text" placeholder="Nowe zadanie…" required maxlength="255">
+        <textarea id="f-notes" rows="2" placeholder="Notatka (opcjonalnie)"></textarea>
+        <div class="row">
+          <label class="check">
+            <input id="f-remind" type="checkbox" checked> Przypomnij o
+          </label>
+          <input id="f-time" type="time" value="08:00">
+        </div>
+        <div class="row actions">
+          <button type="submit" id="f-submit" class="primary">Dodaj</button>
+          <button type="button" id="f-cancel" class="secondary" hidden>Anuluj</button>
+        </div>
+      </form>
+
+      <button id="insert-btn" class="secondary full">Wstaw listę dnia do strony OneNote</button>
+    </section>
+  </main>
+
+  <script src="taskpane.js"></script>
+</body>
+</html>

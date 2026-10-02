@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <title>Logowanie…</title>
+  <!-- Zapasowe logowanie przez okno dialogowe Office, gdy popup MSAL jest blokowany. -->
+  <script>window._hist = { r: history.replaceState, p: history.pushState };</script>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+  <script>history.replaceState = window._hist.r; history.pushState = window._hist.p;</script>
+  <script src="lib/msal-browser.min.js"></script>
+  <script src="config.js"></script>
+</head>
+<body style="font-family: Segoe UI, sans-serif; padding: 24px;">
+  <p id="msg">Logowanie…</p>
+  <script>
+    (function () {
+      const CFG = window.KALENDARZ_CONFIG;
+      function send(payload) { Office.context.ui.messageParent(JSON.stringify(payload)); }
+      function done(res) {
+        send({ ok: true, token: res.accessToken, expiresOn: res.expiresOn.getTime(), username: res.account.username });
+      }
+      Office.onReady(async function () {
+        try {
+          const pca = new msal.PublicClientApplication({
+            auth: {
+              clientId: CFG.clientId,
+              authority: "https://login.microsoftonline.com/" + CFG.tenantId,
+              redirectUri: location.href.split("?")[0].split("#")[0]
+            },
+            cache: { cacheLocation: "localStorage" }
+          });
+          await pca.initialize();
+          const res = await pca.handleRedirectPromise();
+          if (res) { done(res); return; }
+          const account = pca.getAllAccounts()[0];
+          if (account) {
+            try { done(await pca.acquireTokenSilent({ scopes: CFG.scopes, account: account })); return; } catch (e) { /* interakcja */ }
+          }
+          await pca.acquireTokenRedirect({ scopes: CFG.scopes, account: account });
+        } catch (e) {
+          document.getElementById("msg").textContent = "Błąd: " + e.message;
+          send({ ok: false, error: e.message });
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

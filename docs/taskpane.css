@@ -1,0 +1,104 @@
+:root {
+  --accent: #7719aa;
+  --accent-soft: #f3e8fa;
+  --bg: #ffffff;
+  --surface: #faf9f8;
+  --border: #e1dfdd;
+  --text: #201f1e;
+  --muted: #605e5c;
+  --danger: #a4262c;
+  --today: #0f6cbd;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #c58af0;
+    --accent-soft: #3b2649;
+    --bg: #1f1f1f;
+    --surface: #2a2a2a;
+    --border: #3d3d3d;
+    --text: #f3f2f1;
+    --muted: #b3b0ad;
+    --danger: #f1707b;
+    --today: #62abf5;
+  }
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font: 14px/1.4 "Segoe UI", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+[hidden] { display: none !important; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: 600; color: var(--accent); }
+.account { font-size: 12px; color: var(--muted); max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.banner { margin: 8px 12px; padding: 8px 10px; border-radius: 4px; background: #fde7e9; color: #a4262c; font-size: 13px; }
+.banner.info { background: var(--accent-soft); color: var(--text); }
+
+.login { padding: 24px 16px; text-align: center; }
+
+button { font: inherit; cursor: pointer; border-radius: 4px; }
+button.primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); padding: 6px 14px; }
+button.secondary { background: transparent; color: var(--text); border: 1px solid var(--border); padding: 6px 14px; }
+button.icon { background: transparent; border: none; font-size: 20px; color: var(--text); width: 32px; height: 32px; }
+button.icon:hover, button.secondary:hover { background: var(--surface); }
+button.link { background: none; border: none; color: var(--accent); padding: 4px 0; }
+button.full { width: 100%; margin-top: 12px; }
+button:disabled { opacity: .5; cursor: default; }
+
+.calendar { padding: 8px 12px 4px; }
+.cal-nav { display: flex; align-items: center; justify-content: space-between; }
+.month-label { font-weight: 600; text-transform: capitalize; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.weekdays span { text-align: center; font-size: 11px; color: var(--muted); padding: 4px 0; }
+.days button {
+  position: relative; aspect-ratio: 1 / 1; border: 1px solid transparent;
+  background: transparent; color: var(--text); padding: 0; font-size: 13px;
+}
+.days button:hover { background: var(--surface); }
+.days button.other { color: var(--muted); opacity: .5; }
+.days button.today { color: var(--today); font-weight: 700; }
+.days button.selected { background: var(--accent); color: #fff; }
+.days button .dot {
+  position: absolute; left: 50%; bottom: 3px; transform: translateX(-50%);
+  min-width: 6px; height: 6px; border-radius: 3px; background: var(--accent);
+}
+.days button.selected .dot { background: #fff; }
+.days button .dot.done { background: var(--muted); }
+
+.day { padding: 4px 12px 16px; border-top: 1px solid var(--border); }
+.day h2 { font-size: 15px; margin: 12px 0 8px; }
+.muted { color: var(--muted); font-size: 13px; }
+
+.tasks { list-style: none; margin: 0 0 12px; padding: 0; }
+.tasks li {
+  display: flex; align-items: flex-start; gap: 8px; padding: 6px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.tasks li input[type=checkbox] { margin-top: 3px; accent-color: var(--accent); }
+.tasks .body { flex: 1; min-width: 0; cursor: pointer; }
+.tasks .title { word-wrap: break-word; }
+.tasks li.completed .title { text-decoration: line-through; color: var(--muted); }
+.tasks .meta { font-size: 12px; color: var(--muted); }
+.tasks .notes { font-size: 12px; color: var(--muted); white-space: pre-wrap; }
+.tasks .del { background: none; border: none; color: var(--muted); font-size: 16px; padding: 0 4px; }
+.tasks .del:hover { color: var(--danger); }
+
+.task-form { display: flex; flex-direction: column; gap: 6px; }
+.task-form input[type=text], .task-form textarea, .task-form input[type=time] {
+  font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; width: 100%;
+}
+.task-form input[type=time] { width: auto; }
+.task-form textarea { resize: vertical; }
+.row { display: flex; align-items: center; gap: 8px; }
+.row.actions { justify-content: flex-start; }
+.check { display: flex; align-items: center; gap: 6px; }
+.check input { accent-color: var(--accent); }
